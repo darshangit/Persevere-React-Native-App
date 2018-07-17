@@ -10,12 +10,20 @@ import {
 } from 'react-native-cards';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import moment from 'moment';
-import CheckBox from 'react-native-check-box'
+import CheckBox from 'react-native-check-box';
+
 class DayPlanCard extends Component {
-  state = {
-    showTimePicker: false,
-    time: null
-  };
+
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showTimePicker: false,
+      time: null
+    };
+  }
+
+
 
   timePickerHide = () => {
     this.setState({ showTimePicker: false });
@@ -25,7 +33,7 @@ class DayPlanCard extends Component {
     this.setState({ showTimePicker: true });
   };
 
-  timePicked = (time) => {
+  timePicked = time => {
     this.setState({
       time: time,
       showTimePicker: false
@@ -37,19 +45,33 @@ class DayPlanCard extends Component {
     return parsed.format('LT');
   };
 
+  deleteCard = () => {
+    console.log('deletecard')
+    this.props.dayCards.pop()
+    this.props.parent.setState({
+      dayCards: this.props.dayCards
+    })
+  }
+
   render() {
     return (
       <View>
         <Card>
-        <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-
-          <CardTitle subtitle="Description" />
-          <CheckBox style={{padding: 10}}
-    onClick={()=> console.log('asdsad')}
-/>;
-            </View>
+          <View
+            style={{
+              flex: 1,
+              flexDirection: 'row',
+              justifyContent: 'flex-end'
+            }}
+          >
+            <CardTitle subtitle="Description" />
+            <CheckBox
+              style={{ padding: 10 }}
+              onClick={() => console.log('asdsad')}
+            />;
+          </View>
           <CardContent>
-           <TextInput/>
+            <TextInput />
           </CardContent>
           <CardAction separator={true} inColumn={false}>
             <CardButton
@@ -59,15 +81,22 @@ class DayPlanCard extends Component {
             />
             <DateTimePicker
               isVisible={this.state.showTimePicker}
-              onConfirm={(time) => this.timePicked(time)}
+              onConfirm={time => this.timePicked(time)}
               onCancel={this.timePickerHide}
               mode={'time'}
             />
             console.log(this.state.time);
-            
-            <Text>{this.state.time !== null ? this.formatTime(this.state.time) : ''}</Text>
-            <View style={{flex: 1, flexDirection: 'row', justifyContent: 'flex-end'}}>
-            <CardButton onPress={() => {}} title="Delete" color="#FEB557" />
+            <Text>
+              {this.state.time !== null ? this.formatTime(this.state.time) : ''}
+            </Text>
+            <View
+              style={{
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'flex-end'
+              }}
+            >
+              <CardButton onPress={() => {this.deleteCard()}} title="Delete" color="#FEB557" />
             </View>
           </CardAction>
         </Card>

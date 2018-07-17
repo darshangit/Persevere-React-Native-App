@@ -16,6 +16,7 @@ export class HomeScreenComponent extends Component {
   onPress = () => {
     Alert.alert('Button Tapped');
   };
+  
   render() {
     const { navigate } = this.props.navigation;
     return (
