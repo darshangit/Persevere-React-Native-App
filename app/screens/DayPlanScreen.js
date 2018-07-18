@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, ScrollView, FlatList } from 'react-native';
+import { View, Text, ScrollView, FlatList, StyleSheet } from 'react-native';
 import ActionButton from 'react-native-action-button';
 import DayPlanCard from '../cards/DayPlanCard';
 
@@ -8,13 +8,15 @@ export default class DayPlanComponent extends Component {
     super(props);
     this.state = {
       dayCards: [1],
-      parent: this
+      parent: this,
+      today: new Date().toDateString()
     };
   }
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
-        <ActionButton
+        <ActionButton style={{zIndex: 1}}
+        key="fab"
           buttonColor="rgba(231,76,60,1)"
           onPress={() => {
             this.state.dayCards.push(this.state.dayCards.length * 7)
@@ -25,6 +27,9 @@ export default class DayPlanComponent extends Component {
         />
 
         <View>
+          <View style={styles.centerAlign}>
+          <Text>{this.state.today}</Text>
+          </View>
           <ScrollView>
             {/* <FlatList
             data={this.state.dayCards}
@@ -43,3 +48,13 @@ export default class DayPlanComponent extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+
+  centerAlign: {
+    flexDirection: 'column',
+    alignItems: 'center',
+  }
+})
+
+

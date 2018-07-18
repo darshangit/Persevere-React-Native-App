@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { View, Text, TextInput } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
 import {
   Card,
   CardTitle,
@@ -19,11 +19,10 @@ class DayPlanCard extends Component {
 
     this.state = {
       showTimePicker: false,
-      time: null
+      time: null,
+      checked: false
     };
   }
-
-
 
   timePickerHide = () => {
     this.setState({ showTimePicker: false });
@@ -47,16 +46,32 @@ class DayPlanCard extends Component {
 
   deleteCard = () => {
     console.log('deletecard')
-    this.props.dayCards.pop()
-    this.props.parent.setState({
-      dayCards: this.props.dayCards
+    Alert.alert(
+      'Are you sure to delete the card?',null,[
+        {text: 'No' , onPress: () => console.log('Cancel'), style: 'cancel'},
+        {text: 'Yes' , onPress: () => {
+          this.props.dayCards.pop()
+          this.props.parent.setState({
+            dayCards: this.props.dayCards
+          })
+        }
+      }
+      ]
+    )
+
+  }
+
+  toggleCheckBox = () => {
+    this.state.checked = this.state.checked ? false : true
+    this.setState({
+      checked: this.state.checked
     })
   }
 
   render() {
     return (
       <View>
-        <Card>
+        <Card style={[this.state.checked ? styles.checkedStyle : '']}>
           <View
             style={{
               flex: 1,
@@ -64,15 +79,16 @@ class DayPlanCard extends Component {
               justifyContent: 'flex-end'
             }}
           >
-            <CardTitle subtitle="Description" />
+            <CardContent>
+            <TextInput multiline = {true} placeholder="Add Task"/>
+          </CardContent>
             <CheckBox
+              isChecked={this.state.checked}
               style={{ padding: 10 }}
-              onClick={() => console.log('asdsad')}
+              onClick={() => this.toggleCheckBox()}
             />;
           </View>
-          <CardContent>
-            <TextInput />
-          </CardContent>
+          
           <CardAction separator={true} inColumn={false}>
             <CardButton
               onPress={this.timePickerShow}
@@ -104,5 +120,11 @@ class DayPlanCard extends Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  checkedStyle: {
+    backgroundColor: '#D7545F'
+  }
+});
 
 export default DayPlanCard;
