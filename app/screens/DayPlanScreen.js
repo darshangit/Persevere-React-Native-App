@@ -12,6 +12,10 @@ export default class DayPlanComponent extends Component {
       today: new Date().toDateString()
     };
   }
+
+  componentWillUnmount() {
+    console.log('unmounting')
+  }
   render() {
     return (
       <View style={{ flex: 1, backgroundColor: '#f3f3f3' }}>
@@ -19,7 +23,7 @@ export default class DayPlanComponent extends Component {
         key="fab"
           buttonColor="rgba(231,76,60,1)"
           onPress={() => {
-            this.state.dayCards.push(this.state.dayCards.length * 7)
+            this.state.dayCards.push(this.state.dayCards.length + 1)
             this.setState({
               dayCards: this.state.dayCards
             })
@@ -39,7 +43,7 @@ export default class DayPlanComponent extends Component {
             /> */}
             {
               this.state.dayCards.map((item, key) => (
-                <DayPlanCard key={item} {...this.state}/>
+                <DayPlanCard key={item} id={item} {...this.state}/>
               ))
             }
           </ScrollView>

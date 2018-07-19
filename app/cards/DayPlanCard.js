@@ -45,6 +45,8 @@ class DayPlanCard extends Component {
   };
 
   deleteCard = () => {
+    console.log('this.props', this.props.id)
+
     console.log('deletecard')
     Alert.alert(
       'Are you sure to delete the card?',null,[
